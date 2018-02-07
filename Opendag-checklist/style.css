@@ -1,0 +1,29 @@
+body {
+    font-size: 16pt;
+    background-image: url(achtergrond.png);
+    background-repeat: no-repeat;
+    background-size: 100% 120%;
+}
+p {
+    color:black;
+    text-align: center;
+}
+[type=radio] {
+    width: 20px;
+    height: 20px;
+}
+table {
+    background: rgba(255,255,255,0.95);
+    text-align : center;
+    margin-left: auto;
+    margin-right: auto;
+}
+h1 {
+    text-align: center;
+}
+textarea {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+

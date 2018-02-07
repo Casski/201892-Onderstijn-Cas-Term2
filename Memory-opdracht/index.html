@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        div#memory_board{
+            background:#CCC;
+            border:#999 1px solid;
+            width:800px;
+            height:540px;
+            padding:24px;
+            margin:0px auto;
+        }
+        div#memory_board > div{
+            background: url(tile_bg.jpg) no-repeat;
+            border:#000 1px solid;
+            font-family: arial;
+            width:71px;
+            height:71px;
+            float:left;
+            margin:10px;
+            padding:20px;
+            font-size:64px;
+            cursor:pointer;
+            text-align:center;
+            background-size: cover;
+        }
+        #turn{
+          text-align:center;
+          font-family:arial;
+          margin-top:40px;
+          margin-bottom:40px;
+        }
+        #player1, #player2{
+          font-family:arial;
+          font-size:20px; 
+          border:#999 1px solid;
+          width:828px;
+
+        }
+        #player1{
+          background-color:#CCC;
+          margin:0 auto;
+          padding:10px;
+          border-bottom:none;
+        }
+        #player2 {
+          background-color:#CCC;
+          margin:0 auto;
+          padding:10px;
+          border-bottom:none;
+        }
+    </style>
+    <script>
+
+        var memory_array = ['A','A','B','B','C','C','D','D','E','E','F','F','G','G','H','H','I','I','J','J','K','K','L','L'];
+        var memory_values = [];
+        var memory_tile_ids = [];
+        var tiles_flipped = 0;
+        var player1score = 0;
+        var player2score = 0;
+        var player_turn = 1;
+        Array.prototype.memory_tile_shuffle = function(){
+            var i = this.length, j, temp;
+            while(--i > 0){
+                j = Math.floor(Math.random() * (i+1));
+                temp = this[j];
+                this[j] = this[i];
+                this[i] = temp;
+            }
+        }
+        function newBoard(){
+            tiles_flipped = 0;
+            var output = '';
+            memory_array.memory_tile_shuffle();
+            for(var i = 0; i < memory_array.length; i++){
+                output += '<div id="tile_'+i+'" onclick="memoryFlipTile(this,\''+memory_array[i]+'\')"></div>';
+            }
+            document.getElementById('memory_board').innerHTML = output;
+        }
+        function memoryFlipTile(tile,val){
+            if(tile.innerHTML == "" && memory_values.length < 2){
+                tile.style.background = '#FFF';
+                tile.innerHTML = val;
+                if(memory_values.length == 0){
+                    memory_values.push(val);
+                    memory_tile_ids.push(tile.id);
+                } else if(memory_values.length == 1){
+                    memory_values.push(val);
+                    memory_tile_ids.push(tile.id);
+                    if(memory_values[0] == memory_values[1]){
+                        tiles_flipped += 2;
+                        if (player_turn == 1){
+                            player1score = player1score + 2;
+                            document.getElementById('player1').innerHTML = "player1's score = " + player1score;
+                        }
+                        else if (player_turn == 2){
+                            player2score = player2score + 2;
+                            document.getElementById('player2').innerHTML = "player2's score = " + player2score;
+                        }
+                        if (player_turn == 1){
+                            player_turn = 2;
+
+                        }
+                        else if (player_turn == 2){
+                            player_turn = 1;
+
+                        }
+                        memory_values = [];
+                        memory_tile_ids = [];
+                        if(tiles_flipped == memory_array.length){
+
+                            if(player1score > player2score){
+                                alert("PLAYER 1 WINS!!!!!!!!!!!!!!!!!!   generating new board");
+                            }
+                            else if(player2score > player1score){
+                                alert("PLAYER 2 WINS!!!!!!!!!!!!!!!!!!   generating new board");
+                            }
+                            else {
+                                alert("Draw, no one wins...   generating new board");
+                            }
+                            document.getElementById('memory_board').innerHTML = "";
+                            newBoard();
+                            player1score = 0;
+                            player2score = 0;
+                            player_turn = 1;
+                            document.getElementById('player1').innerHTML = "player1's score = " + player1score;
+                            document.getElementById('player2').innerHTML = "player2's score = " + player2score;
+                            document.getElementById('turn').innerHTML = "It is Player1's turn";
+
+                        }
+                    } else {
+
+                        function flip2Back(){
+                            if (player_turn == 1){
+                                player_turn = 2;
+                                document.getElementById('turn').innerHTML = "It is Player2's turn";
+
+                            }
+                            else if (player_turn == 2){
+                                player_turn = 1;
+                                document.getElementById('turn').innerHTML = "It is Player1's turn";
+
+                            }
+                            var tile_1 = document.getElementById(memory_tile_ids[0]);
+                            var tile_2 = document.getElementById(memory_tile_ids[1]);
+//                            tile_1.style.background = 'url(tile_bg2.jpg)';
+                            tile_1.innerHTML = "";
+//                            tile_2.style.background = 'url(tile_bg2.jpg)';
+                            tile_2.innerHTML = "";
+                            // Clear both arrays
+                            memory_values = [];
+                            memory_tile_ids = [];
+                        }
+                        setTimeout(flip2Back, 1000);
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+<h1 id="turn">It is Player1's turn</h1>
+<h2 id="player1">player1's score = 0</h2>
+<h2 id="player2">player2's score = 0</h2>
+<div id="memory_board"></div>
+<script>newBoard();</script>
+</body>
+</html>

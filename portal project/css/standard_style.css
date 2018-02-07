@@ -1,0 +1,7 @@
+body {
+    background-image: url("../images/backgroundimg.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-family: 'Roboto Mono', monospace;
+    color: #000000;
+}
